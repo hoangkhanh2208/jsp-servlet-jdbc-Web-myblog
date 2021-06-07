@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.myblog.dao.IPostsDAO;
 import com.myblog.mapper.PostsMapper;
 import com.myblog.model.CategoryModel;
@@ -34,7 +36,7 @@ public class PostsDAO extends AbstractDAO<PostModel> implements IPostsDAO{
 	}
 	
 	@Override
-	public PostModel fineOne(long id) {
+	public PostModel findOne(long id) {
 		String sql = "SELECT * FROM posts WHERE id = ?";
 		List<PostModel> post = query(sql, new PostsMapper(), id);
 		return post.isEmpty() ? null : post.get(0);
@@ -63,7 +65,7 @@ public class PostsDAO extends AbstractDAO<PostModel> implements IPostsDAO{
 	@Override
 	public List<PostModel> findAll(Pageble pageble) {
 		StringBuilder sql = new StringBuilder("SELECT * FROM posts ");
-		if (pageble.getSorter() != null ) {
+		if (pageble.getSorter() != null && StringUtils.isNotBlank(pageble.getSorter().getSortName()) && StringUtils.isNotBlank(pageble.getSorter().getSortBy())) {
 			sql.append(" ORDER BY " + pageble.getSorter().getSortName() + " " + pageble.getSorter().getSortBy() + " ");
 		}
 		if (pageble.getOffset() != null && pageble.getLimit() != null) {

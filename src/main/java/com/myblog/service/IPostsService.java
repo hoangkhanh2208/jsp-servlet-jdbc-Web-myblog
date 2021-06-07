@@ -12,4 +12,5 @@ public interface IPostsService {
 	void delete(long[] ids); 
 	List<PostModel> findAll(Pageble pageble);
 	int getTotalItem();
+	PostModel findOne(long id);
 }

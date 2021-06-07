@@ -1,13 +1,12 @@
 package com.myblog.model;
 
-import java.sql.Timestamp;
-
 public class UserModel extends AbstractModel<UserModel>{
 	private String userName;
 	private String fullName;
 	private String password;
 	private int status;
 	private long roleId;
+	private RoleModel role = new RoleModel();
 
 	public String getUserName() {
 		return userName;
@@ -47,6 +46,14 @@ public class UserModel extends AbstractModel<UserModel>{
 
 	public void setRoleId(long roleId) {
 		this.roleId = roleId;
+	}
+
+	public RoleModel getRole() {
+		return role;
+	}
+
+	public void setRole(RoleModel role) {
+		this.role = role;
 	}
 
 }

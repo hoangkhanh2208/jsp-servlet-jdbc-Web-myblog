@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myblog.model.PostModel;
+import com.myblog.model.UserModel;
 import com.myblog.service.IPostsService;
 import com.myblog.utils.HttpUtil;
+import com.myblog.utils.SessionUtil;
 
 @WebServlet(urlPatterns = "/api-admin-post")
 public class PostAPI extends HttpServlet{
@@ -28,6 +30,7 @@ public class PostAPI extends HttpServlet{
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		PostModel postModel = HttpUtil.of(request.getReader()).toModel(PostModel.class);
+		postModel.setCreatedBy(((UserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserName());
 		postModel = postService.save(postModel);
 		mapper.writeValue(response.getOutputStream(), postModel);
 	}
@@ -38,6 +41,7 @@ public class PostAPI extends HttpServlet{
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json");
 		PostModel updatePost = HttpUtil.of(request.getReader()).toModel(PostModel.class);
+		updatePost.setModifiedBy(((UserModel) SessionUtil.getInstance().getValue(request, "USERMODEL")).getUserName());
 		updatePost = postService.update(updatePost);
 		mapper.writeValue(response.getOutputStream(), updatePost);
 	}
